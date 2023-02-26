@@ -17,11 +17,11 @@ for (let i = 0; i < button.length; i++) {
 // ボタンの中の記号とターンの変更、更新を行う
 function updateInfo(button) {
   if (turnCount % 2 == 0) {
-    button.innerHTML = "◯";
-    userTurn.innerHTML = "X's Turn";
+    button.innerHTML = "&#9675";
+    userTurn.innerHTML = "X";
   } else {
-    button.innerHTML = "✖︎";
-    userTurn.innerHTML = "O's Turn";
+    button.innerHTML = "&#10006";
+    userTurn.innerHTML = "O";
   }
 
   // 現在のturnを更新
