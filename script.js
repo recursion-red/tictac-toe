@@ -31,15 +31,23 @@ const winPattern = [
 
 // 現在のTurnを変数に代入
 let turnCount = 1;
+let count = 1;
 
 for (let i = 0; i < button.length; i++) {
   button[i].addEventListener("click", function () {
     // buttonの中身が空だったら、情報を更新するupdateInfo関数を呼び出す
     if (button[i].innerHTML == "") {
       updateInfo(button[i]);
+     
+      // draw判定
+      if(count >= 9) {
+        drawDisplay()
+      }
 
       // 勝利判定
       winerCheck()
+
+      count++
     }
   });
 }
@@ -68,22 +76,38 @@ function winerCheck() {
         // 勝利判定
         if(element1 != "" && element2 != "" && element3 != "") {
             if(element1 == element2 && element2 == element3) {
-                console.log("値も同じ");
                 // winの画面を表示させる関数を呼び出す
-                winerDisplay();
+                winerDisplay(element1);
             }
         }
     }
 }
 
+function winerDisplay(ele) {
 
+    config.winJudgeMessage.innerHTML = 
+    `
+    <h2>${ele}'s Win!</h2>
+    <button id="restartButton">Restart</button>
+    `;
 
-function winerDisplay() {
     // 現在の画面を非表示にする
-    config.mainPage.classList.remove("d-block")
-    config.mainPage.classList.add("d-none");
-
+    displayNone(config.mainPage);
     // 非表示のdivを表示させる
-    config.winJudgeMessage.classList.remove("d-none")
-    config.winJudgeMessage.classList.add("d-block");
+    displayBlock(config.winJudgeMessage);
+}
+
+function drawDisplay() {
+    
+    config.winJudgeMessage.innerHTML = 
+    `
+    <h2>Draw!!</h2>
+    <button id="restartButton">Restart</button>
+    `;
+
+    // 現在の画面を非表示にする
+    displayNone(config.mainPage);
+    // 非表示のdivを表示させる
+    displayBlock(config.winJudgeMessage);
+
 }
