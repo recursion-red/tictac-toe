@@ -16,7 +16,6 @@ for (let i = 0; i < button.length; i++) {
 
 // ボタンの中の記号とターンの変更、更新を行う
 function updateInfo(button) {
-  console.log(turnCount % 2);
   if (turnCount % 2 == 0) {
     button.innerHTML = "&#9675";
     userTurn.innerHTML = "X";
