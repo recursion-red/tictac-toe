@@ -38,6 +38,21 @@
         </div>
       </div>
       <h2 class="text-center"><span id="user-turn">X</span>'s Turn</h2>
+      <!-- リザルト画面確認用ボタン　終わったら削除-->
+      <button type="button" class="checkResult">check display Result</button>
+    </div>
+    <!--modal-->
+    <div class="modal bg-light d-none" id="modal">
+        <div class="modal-dialog">
+            <div class="modal-content bg-dark">
+            <div class="modal-header">
+                <h1 class="modal-title text-white" id="modal-winner"></h1>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="fs-5 btn btn-outline-warning" id="modal-btn-reset">Reset</button>
+            </div>
+            </div>
+        </div>
     </div>
     <script src="script.js"></script>
   </body>
