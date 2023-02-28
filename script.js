@@ -18,6 +18,8 @@ function displayBlock(ele) {
 // buttonとuserTurnを取得
 const button = document.querySelectorAll(".button");
 const userTurn = document.getElementById("user-turn");
+// 埋まっているindexを保存
+let fillIndex = [];
 // 勝ちパターンを定義
 const winPattern = [
   [0, 1, 2],
@@ -56,6 +58,17 @@ for (let i = 0; i < button.length; i++) {
       // draw判定
       if (count >= 9) {
         renderResult("draw");
+      }
+
+      const cpuIndex = cpu(i);
+      console.log(cpuIndex);
+
+      if (cpuIndex != "end") {
+        button[cpuIndex].innerHTML =
+          userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+        userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+        button[cpuIndex].classList.remove("text-secondary");
+        button[cpuIndex].setAttribute("check-now", "1");
       }
 
       // 勝利判定
@@ -108,8 +121,26 @@ function renderResult(winPlayer) {
     // modalを非表示、テーブルを表示
     displayNone(config.modal);
     displayBlock(config.mainPage);
-    // countを初期化する
+    // userのturnを初期化
     userTurn.innerHTML = "X";
+    // fillIndexを初期化
+    fillIndex = [];
+    // countを初期化する
     count = 1;
   });
+}
+
+// CPUを作成する関数
+function cpu(index) {
+  if (fillIndex.length == 8) return "end";
+  fillIndex.push(index);
+  let cpuIndex = 0;
+
+  while (fillIndex.indexOf(cpuIndex) != -1) {
+    cpuIndex = Math.floor(Math.random() * 9);
+  }
+
+  fillIndex.push(cpuIndex);
+
+  return cpuIndex;
 }
