@@ -61,7 +61,6 @@ for (let i = 0; i < button.length; i++) {
       }
 
       const cpuIndex = cpu(i);
-      console.log(cpuIndex);
 
       if (cpuIndex != "end") {
         button[cpuIndex].innerHTML =
@@ -69,6 +68,8 @@ for (let i = 0; i < button.length; i++) {
         userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
         button[cpuIndex].classList.remove("text-secondary");
         button[cpuIndex].setAttribute("check-now", "1");
+
+        count++;
       }
 
       // 勝利判定
