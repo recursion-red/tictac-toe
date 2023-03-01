@@ -1,6 +1,72 @@
 .contents {
-  height: 100vh;
+  /* デザインの追加 */
+  background-image: repeating-linear-gradient(
+      to bottom,
+      transparent 25px,
+      rgba(0, 0, 0, 0.04) 26px,
+      rgba(0, 0, 0, 0.04) 26px,
+      transparent 27px,
+      transparent 51px,
+      rgba(0, 0, 0, 0.04) 52px,
+      rgba(0, 0, 0, 0.04) 52px,
+      transparent 53px,
+      transparent 77px,
+      rgba(0, 0, 0, 0.04) 78px,
+      rgba(0, 0, 0, 0.04) 78px,
+      transparent 79px,
+      transparent 103px,
+      rgba(0, 0, 0, 0.04) 104px,
+      rgba(0, 0, 0, 0.04) 104px,
+      transparent 105px,
+      transparent 129px,
+      rgba(0, 0, 0, 0.04) 130px,
+      rgba(0, 0, 0, 0.04) 130px
+    ),
+    repeating-linear-gradient(
+      to right,
+      transparent 25px,
+      rgba(0, 0, 0, 0.04) 26px,
+      rgba(0, 0, 0, 0.04) 26px,
+      transparent 27px,
+      transparent 51px,
+      rgba(0, 0, 0, 0.04) 52px,
+      rgba(0, 0, 0, 0.04) 52px,
+      transparent 53px,
+      transparent 77px,
+      rgba(0, 0, 0, 0.04) 78px,
+      rgba(0, 0, 0, 0.04) 78px,
+      transparent 79px,
+      transparent 103px,
+      rgba(0, 0, 0, 0.04) 104px,
+      rgba(0, 0, 0, 0.04) 104px,
+      transparent 105px,
+      transparent 129px,
+      rgba(0, 0, 0, 0.04) 130px,
+      rgba(0, 0, 0, 0.04) 130px
+    );
+  /*  */
 }
+
+/* アニメーションの追加 */
+.title-string {
+  display: inline-block;
+}
+
+.title-string:hover {
+  transform: rotate(180deg);
+}
+/*  */
+
+/* デザインの追加 */
+#mainPage {
+  padding: 60px 20px;
+}
+@media screen and (min-width: 768px) {
+  #mainPage {
+    padding: 100px;
+  }
+}
+/*  */
 
 .button {
   width: 100px;
@@ -12,41 +78,33 @@
   font-size: 60px;
 }
 
-.button-wrap-center {
-  border-top: 2px solid black;
-  border-bottom: 2px solid black;
-}
-
-.button-center {
-  border-right: 2px solid black;
-  border-left: 2px solid black;
-}
-
 /* modal */
-/* bootsrrap overRilde */
-.modal-dialog{
-    display: flex;
-    align-items: center;
-    min-height: 100%;
-} 
 
-.modal-content{
-    border: none !important;
-    /*
-    background-color: rgba(255,255,255,0);
-    */
-    height: 50vh;
-    justify-content: center;
-    row-gap: 0.5rem;
+/* デザインの追加 */
+.modal-content {
+  background-color: transparent;
+}
+/*  */
+
+.modal-dialog {
+  display: flex;
+  align-items: center;
+  min-height: 100%;
 }
 
-.modal-header{
-    border-bottom: none !important;
-    justify-content: center;
+.modal-content {
+  height: 50vh;
+  justify-content: center;
+  row-gap: 0.5rem;
 }
 
-.modal-footer{
-    justify-content: center;
-    border-top: none !important;
+.modal-header {
+  border-bottom: none !important;
+  justify-content: center;
+}
+
+.modal-footer {
+  justify-content: center;
+  border-top: none !important;
 }
 /* end overRide */

@@ -15,7 +15,7 @@ function displayBlock(ele) {
   ele.classList.add("d-block");
 }
 
-// buttonとuserTurnを取得
+// buttonとturnを取得
 const button = document.querySelectorAll(".button");
 const userTurn = document.getElementById("user-turn");
 // 埋まっているindexを保存
@@ -114,7 +114,6 @@ function renderResult(winPlayer) {
   // リセットボタン処理
   btnReset.addEventListener("click", function () {
     for (let i = 0; i < button.length; i++) {
-      console.log(button[i]);
       button[i].removeAttribute("check-now");
       button[i].innerHTML = "";
     }
@@ -122,6 +121,7 @@ function renderResult(winPlayer) {
     // modalを非表示、テーブルを表示
     displayNone(config.modal);
     displayBlock(config.mainPage);
+
     // userのturnを初期化
     userTurn.innerHTML = "X";
     // fillIndexを初期化
