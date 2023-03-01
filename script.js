@@ -63,13 +63,15 @@ for (let i = 0; i < button.length; i++) {
       const cpuIndex = cpu(i);
 
       if (cpuIndex != "end") {
-        button[cpuIndex].innerHTML =
-          userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
-        userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
-        button[cpuIndex].classList.remove("text-secondary");
-        button[cpuIndex].setAttribute("check-now", "1");
+        setTimeout(()=>{
+          button[cpuIndex].innerHTML =
+            userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+          userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+          button[cpuIndex].classList.remove("text-secondary");
+          button[cpuIndex].setAttribute("check-now", "1");
 
-        count++;
+          count++;
+        }, 800);
       }
 
       // 勝利判定
