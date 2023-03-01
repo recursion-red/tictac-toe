@@ -15,46 +15,72 @@
 
   <body>
     <div
-      class="contents d-flex flex-column align-items-center justify-content-center"
+      class="contents d-flex flex-column align-items-center justify-content-center vh-100 pt-5"
     >
-        <div id="mainPage" class="d-block">
-            <h1 class="text-center">Tic Tac Toe</h1>
+      <div id="mainPage" class="d-block">
+        <h1
+          class="main-title h1 d-flex justify-content-center align-items-center"
+        >
+          <span class="title-string">T</span>
+          <span class="title-string">i</span>
+          <span class="title-string">c </span>
+          <span class="title-string">T</span>
+          <span class="title-string">a</span>
+          <span class="title-string">c</span>
+          <span class="title-string">T</span>
+          <span class="title-string">o</span>
+          <span class="title-string">e</span>
+        </h1>
+        <div
+          class="d-flex flex-column justify-content-center align-items-center my-5"
+        >
+          <div class="d-flex">
+            <div class="button"></div>
             <div
-                class="d-flex flex-column justify-content-center align-items-center my-5"
+              class="button button-center border-end border-start border-dark border-2"
+            ></div>
+            <div class="button"></div>
+          </div>
+          <div
+            class="button-wrap-center d-flex border-top border-bottom border-dark border-2"
+          >
+            <div class="button"></div>
+            <div
+              class="button button-center border-end border-start border-dark border-2"
+            ></div>
+            <div class="button"></div>
+          </div>
+          <div class="d-flex">
+            <div class="button"></div>
+            <div
+              class="button button-center border-end border-start border-dark border-2"
+            ></div>
+            <div class="button"></div>
+          </div>
+        </div>
+        <h2 class="text-center"><span id="user-turn">X</span>'s Turn</h2>
+      </div>
+    </div>
+
+    <div class="modal d-none" id="modal">
+      <div class="modal-dialog">
+        <div class="modal-content border border-dark border-1">
+          <div class="modal-header">
+            <h1 class="modal-title text-dark" id="modal-winner"></h1>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="fs-5 btn btn-outline-dark"
+              id="modal-btn-reset"
             >
-                <div class="d-flex">
-                    <div class="button"></div>
-                    <div class="button button-center"></div>
-                    <div class="button"></div>
-                </div>
-                <div class="button-wrap-center d-flex">
-                    <div class="button"></div>
-                    <div class="button button-center"></div>
-                    <div class="button"></div>
-                </div>
-                <div class="d-flex">
-                    <div class="button"></div>
-                    <div class="button button-center"></div>
-                    <div class="button"></div>
-                </div>
-            </div>
-            <h2 class="text-center"><span id="user-turn">X</span>'s Turn</h2>
+              Reset
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-    
-    <!--modal-->
-    <div class="modal bg-light d-none" id="modal">
-        <div class="modal-dialog">
-            <div class="modal-content bg-dark">
-            <div class="modal-header">
-                <h1 class="modal-title text-white" id="modal-winner"></h1>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="fs-5 btn btn-outline-warning" id="modal-btn-reset">Reset</button>
-            </div>
-            </div>
-        </div>
-    </div>
+
     <script src="script.js"></script>
   </body>
 </html>
