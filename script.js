@@ -66,6 +66,11 @@ function renderResult(winPlayer) {
   displayBlock(config.modal);
 
   // リセットボタン処理
+  clickResetBtn(btnReset)
+
+}
+
+function clickResetBtn(btnReset) {
   btnReset.addEventListener("click", function () {
     for (let i = 0; i < button.length; i++) {
       button[i].removeAttribute("check-now");
