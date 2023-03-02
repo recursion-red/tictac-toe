@@ -48,11 +48,11 @@
 }
 
 /* アニメーションの追加 */
-.title-string {
+.reverse-string {
   display: inline-block;
 }
 
-.title-string:hover {
+.reverse-string:hover {
   transform: rotate(180deg);
 }
 /*  */
