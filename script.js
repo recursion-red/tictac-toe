@@ -2,24 +2,9 @@ const config = {
   mainPage: document.getElementById("mainPage"),
   modal: document.getElementById("modal"),
 };
-
-// 非表示にする
-function displayNone(ele) {
-  ele.classList.remove("d-block");
-  ele.classList.add("d-none");
-}
-
-// 非表示を表示させる
-function displayBlock(ele) {
-  ele.classList.remove("d-none");
-  ele.classList.add("d-block");
-}
-
 // buttonとturnを取得
 const button = document.querySelectorAll(".button");
 const userTurn = document.getElementById("user-turn");
-// 埋まっているindexを保存
-let fillIndex = [];
 // 勝ちパターンを定義
 const winPattern = [
   [0, 1, 2],
@@ -32,54 +17,21 @@ const winPattern = [
   [2, 4, 6],
 ];
 
+// 埋まっているindexを保存
+let fillIndex = [];
 // ボタンを押した回数
 let count = 1;
 
-for (let i = 0; i < button.length; i++) {
-  button[i].addEventListener("mouseover", function () {
-    if (button[i].getAttribute("check-now") == null) {
-      button[i].innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
-      button[i].classList.add("text-secondary");
-    }
-  });
+// 非表示にする
+function displayNone(ele) {
+  ele.classList.remove("d-block");
+  ele.classList.add("d-none");
+}
 
-  button[i].addEventListener("mouseout", function () {
-    if (button[i].getAttribute("check-now") == null) {
-      button[i].innerHTML = "";
-    }
-  });
-
-  button[i].addEventListener("click", function () {
-    if (button[i].getAttribute("check-now") == null) {
-      userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
-      button[i].classList.remove("text-secondary");
-      button[i].setAttribute("check-now", "1");
-
-      // draw判定
-      if (count >= 9) {
-        renderResult("draw");
-      }
-
-      const cpuIndex = cpu(i);
-
-      if (cpuIndex != "end") {
-        setTimeout(()=>{
-          button[cpuIndex].innerHTML =
-            userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
-          userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
-          button[cpuIndex].classList.remove("text-secondary");
-          button[cpuIndex].setAttribute("check-now", "1");
-
-          count++;
-        }, 800);
-      }
-
-      // 勝利判定
-      winerCheck();
-
-      count++;
-    }
-  });
+// 非表示を表示させる
+function displayBlock(ele) {
+  ele.classList.remove("d-none");
+  ele.classList.add("d-block");
 }
 
 // 勝利判定の関数
@@ -134,7 +86,7 @@ function renderResult(winPlayer) {
 }
 
 // CPUを作成する関数
-function cpu(index) {
+function getCpuIndex(index) {
   if (fillIndex.length == 8) return "end";
   fillIndex.push(index);
   let cpuIndex = 0;
@@ -147,3 +99,61 @@ function cpu(index) {
 
   return cpuIndex;
 }
+
+function hoverButton(button) {
+  button.addEventListener("mouseover", function () {
+      if (button.getAttribute("check-now") == null) {
+        button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+        button.classList.add("text-secondary");
+      }
+  });
+
+  button.addEventListener("mouseout", function () {
+    if (button.getAttribute("check-now") == null) {
+      button.innerHTML = "";
+    }
+  });
+}
+
+function addTextOX (button) {
+
+      button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+      userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+      button.classList.remove("text-secondary");
+      button.setAttribute("check-now", "1");
+
+      // 勝利判定
+      winerCheck();
+
+      count++;
+}
+
+// ボタン処理
+for (let i = 0; i < button.length; i++) {
+  // ボタンのhover処理
+  hoverButton(button[i]);
+
+  // クリック処理
+  button[i].addEventListener("click", function () {
+    if (button[i].getAttribute("check-now") == null) {
+      // draw判定
+      if (count >= 9) {
+        renderResult("draw");
+      }
+
+      // クリックされた箇所にO or Xを追加
+      addTextOX(button[i])
+
+      // CPU処理
+      const cpuIndex = getCpuIndex(i);
+      if (cpuIndex != "end") {
+        setTimeout(()=>{
+          addTextOX(button[cpuIndex])
+        }, 800);
+      }
+
+    }
+  });
+}
+
+
