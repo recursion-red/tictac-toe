@@ -15,19 +15,19 @@
 
   <body>
     <div
-      class="contents d-flex flex-column align-items-center justify-content-center vh-100 pt-5"
+      class="contents d-flex flex-column"
     >
-      <div id="mainPage" class="d-block">
-        <div class="d-flex flex-column mb-4">
-          <label for="select-mode" class="h4 text-left">Game Mode</label>
+      <div class="d-flex flex-column p-2">
+        <label for="select-mode" class="h4">Game Mode</label>
 
-          <select name="mode" id="select-box" class="select-box p-1 w-50">
-            <option value="cpu">Easy</option>
-            <option value="cpu">Medium</option>
-            <option value="cpu">Hard</option>
-            <option value="player">player vs player</option>
-          </select>
-        </div>
+        <select name="mode" id="select-mode" class="select-box p-1">
+          <option value="cpu">Easy</option>
+          <option value="cpu">Medium</option>
+          <option value="cpu">Hard</option>
+          <option value="player">player vs player</option>
+        </select>
+      </div>
+      <div id="mainPage" class="d-block">
         <h1
           class="main-title h1 d-flex justify-content-center align-items-center"
         >

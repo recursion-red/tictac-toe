@@ -17,7 +17,7 @@ const winPattern = [
   [2, 4, 6],
 ];
 // selectboxを取得
-const selectBox = document.getElementById("select-box");
+const selectBox = document.getElementById("select-mode");
 // あらかじめ現在のvalueを代入
 let currentGameMode = selectBox.value;
 // 埋まっているindexを保存
@@ -35,24 +35,6 @@ function displayNone(ele) {
 function displayBlock(ele) {
   ele.classList.remove("d-none");
   ele.classList.add("d-block");
-}
-
-// ゲームモード反映の関数
-function selectGameMode() {
-  selectBox.addEventListener("change", function () {
-    const message = confirm(
-      "ゲームモードを切り替えますか？(現在の進行状況はリセットされます)"
-    );
-
-    if (message) {
-      // 現在のモードを更新
-      currentGameMode = selectBox.value;
-      // ゲームをリセット
-      resetGame();
-    } else {
-      selectBox.value = currentGameMode;
-    }
-  });
 }
 
 // 勝利判定の関数
@@ -87,27 +69,27 @@ function renderResult(winPlayer) {
   displayBlock(config.modal);
 
   // リセットボタン処理
-  clickResetBtn(btnReset);
+  btnReset.addEventListener("click", function () {
+    clickResetBtn();
+  });
 }
 
-function clickResetBtn(btnReset) {
-  btnReset.addEventListener("click", function () {
-    for (let i = 0; i < button.length; i++) {
-      button[i].removeAttribute("check-now");
-      button[i].innerHTML = "";
-    }
+function clickResetBtn() {
+  for (let i = 0; i < button.length; i++) {
+    button[i].removeAttribute("check-now");
+    button[i].innerHTML = "";
+  }
 
-    // modalを非表示、テーブルを表示
-    displayNone(config.modal);
-    displayBlock(config.mainPage);
+  // modalを非表示、テーブルを表示
+  displayNone(config.modal);
+  displayBlock(config.mainPage);
 
-    // userのturnを初期化
-    userTurn.innerHTML = "X";
-    // fillIndexを初期化
-    fillIndex = [];
-    // countを初期化する
-    count = 1;
-  });
+  // userのturnを初期化
+  userTurn.innerHTML = "X";
+  // fillIndexを初期化
+  fillIndex = [];
+  // countを初期化する
+  count = 1;
 }
 
 // CPUを作成する関数
@@ -131,7 +113,9 @@ function hoverButton(button) {
       if (currentGameMode == "player") {
         button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
         button.classList.add("text-secondary");
-      } else if (count % 2 != 0) {
+      }
+      // cpuのターンではなかったら
+      else if (count % 2 != 0) {
         button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
         button.classList.add("text-secondary");
       }
@@ -183,3 +167,19 @@ for (let i = 0; i < button.length; i++) {
     }
   });
 }
+
+// ゲームモード反映
+selectBox.addEventListener("change", function () {
+  const message = confirm(
+    "ゲームモードを切り替えますか？(現在の進行状況はリセットされます)"
+  );
+
+  if (message) {
+    // 現在のモードを更新
+    currentGameMode = selectBox.value;
+    // ゲームをリセット
+    clickResetBtn();
+  } else {
+    selectBox.value = currentGameMode;
+  }
+});
