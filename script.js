@@ -208,7 +208,6 @@ async function writeOX(button, i){
 
 
 function gameStart ()  {
-
   // ボタン処理
   for (let i = 0; i < button.length; i++) {
 
@@ -248,54 +247,6 @@ selectBox.addEventListener("change", function () {
   }
 });
 
-// MinMax 
-let board = [
-  '', '', '',
-  '', '', '',
-  '', '', '',
-]
 
-function emptySearch(board) {
-  let spaces = [];
-  for (let i = 0; i < board.length; i++){
-    if (board[i] == '') spaces.push(i);
-  }
-  return spaces;
-}
-
-function isWin(board, player) {
-  for (let i in winPattern) {
-    let element1 = board[winPattern[i][0]].innerHTML;
-    let element2 = board[winPattern[i][1]].innerHTML;
-    let element3 = board[winPattern[i][2]].innerHTML;
-
-    // 勝利判定
-    if (element1 != "" && element2 != "" && element3 != "") {
-      if (element1 == element2 && element2 == element3) {
-        // winの画面を表示させる関数を呼び出す
-        renderResult(element1);
-        return true;
-      }
-    }
-  }
-  return false;
-}
-
-function miniMax(board, player){
-  // 空のインデックスを見つける
-  let emptyIndex = emptySearch(board);
-
-  // ポイントを格納する
-  let result = [];
-
-}
-
-/*
-  miniMax(board, players.p1);
-  miniMax(board, players.p2);
-*/
-
-/*
 initGame();
 gameStart();
-*/
