@@ -14,22 +14,32 @@
   </head>
 
   <body>
-    <div
-      class="contents d-flex flex-column align-items-center justify-content-center vh-100 pt-5"
-    >
+    <div id="contents" class="contents d-flex flex-column">
+      <div
+        class="select-box-wrapper d-flex flex-column p-2 border-start border-dark border-5"
+      >
+        <label for="select-mode" class="h4">Game Mode</label>
+
+        <select name="mode" id="select-mode" class="select-box p-1">
+          <option value="cpu">Easy</option>
+          <option value="cpu">Medium</option>
+          <option value="cpu">Hard</option>
+          <option value="player">player vs player</option>
+        </select>
+      </div>
       <div id="mainPage" class="d-block">
         <h1
           class="main-title h1 d-flex justify-content-center align-items-center"
         >
-          <span class="title-string">T</span>
-          <span class="title-string">i</span>
-          <span class="title-string">c </span>
-          <span class="title-string">T</span>
-          <span class="title-string">a</span>
-          <span class="title-string">c</span>
-          <span class="title-string">T</span>
-          <span class="title-string">o</span>
-          <span class="title-string">e</span>
+          <span class="rotate-string">T</span>
+          <span class="rotate-string">i</span>
+          <span class="rotate-string">c </span>
+          <span class="rotate-string">T</span>
+          <span class="rotate-string">a</span>
+          <span class="rotate-string">c</span>
+          <span class="rotate-string">T</span>
+          <span class="rotate-string">o</span>
+          <span class="rotate-string">e</span>
         </h1>
         <div
           class="d-flex flex-column justify-content-center align-items-center my-5"
@@ -64,7 +74,7 @@
 
     <div class="modal d-none" id="modal">
       <div class="modal-dialog">
-        <div class="modal-content border border-dark border-1">
+        <div class="modal-content border border-dark border-2">
           <div class="modal-header">
             <h1 class="modal-title text-dark" id="modal-winner"></h1>
           </div>

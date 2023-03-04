@@ -1,5 +1,4 @@
-.contents {
-  /* デザインの追加 */
+body {
   background-image: repeating-linear-gradient(
       to bottom,
       transparent 25px,
@@ -44,29 +43,24 @@
       rgba(0, 0, 0, 0.04) 130px,
       rgba(0, 0, 0, 0.04) 130px
     );
-  /*  */
 }
 
-/* アニメーションの追加 */
-.title-string {
+.select-box-wrapper {
+  margin: 20px 0 0 20px;
+  width: 170px;
+}
+
+#mainPage {
+  padding-top: 60px;
+}
+
+.rotate-string {
   display: inline-block;
 }
 
-.title-string:hover {
+.rotate-string:hover {
   transform: rotate(180deg);
 }
-/*  */
-
-/* デザインの追加 */
-#mainPage {
-  padding: 60px 20px;
-}
-@media screen and (min-width: 768px) {
-  #mainPage {
-    padding: 100px;
-  }
-}
-/*  */
 
 .button {
   width: 100px;
@@ -79,12 +73,9 @@
 }
 
 /* modal */
-
-/* デザインの追加 */
 .modal-content {
   background-color: transparent;
 }
-/*  */
 
 .modal-dialog {
   display: flex;
