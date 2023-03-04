@@ -25,7 +25,34 @@ let fillIndex = [];
 // ボタンを押した回数
 let count = 1;
 // cpu動作をするかしないか 0だったらする、1だったらしない
-let cpuControl = 0;
+
+let players = {
+  p1: 'x',
+  p2: 'o'
+}
+
+// cpuの状態
+let cpuStatus = {
+  player: 'O',
+  state: false,
+  level: 'easy',
+}
+
+function initGame() {
+  if (currentGameMode == ('eazy' || 'medium' || 'hard')) {
+    cpuStatus.state = true;
+    cpuStatus.level = currentGameMode;
+  } else {
+    cpuStatus.state = false;
+  }
+
+  // userのturnを初期化
+  userTurn.innerHTML = "X";
+  // fillIndexを初期化
+  fillIndex = [];
+  // countを初期化する
+  count = 1;
+}
 
 // 非表示にする
 function displayNone(ele) {
@@ -51,14 +78,15 @@ function winerCheck() {
       if (element1 == element2 && element2 == element3) {
         // winの画面を表示させる関数を呼び出す
         renderResult(element1);
+        return true;
       }
     }
   }
+  return false;
 }
 
 // リザルト画面を表示する
 function renderResult(winPlayer) {
-  cpuControl = 1;
   let btnReset = document.getElementById("modal-btn-reset");
   let modalWinner = document.getElementById("modal-winner");
 
@@ -80,18 +108,14 @@ function clickResetBtn(btnReset) {
     for (let i = 0; i < button.length; i++) {
       button[i].removeAttribute("check-now");
       button[i].innerHTML = "";
+      button[i].removeAttribute('style');
     }
 
     // modalを非表示、テーブルを表示
     displayNone(config.modal);
     displayBlock(config.mainPage);
 
-    // userのturnを初期化
-    userTurn.innerHTML = "X";
-    // fillIndexを初期化
-    fillIndex = [];
-    // countを初期化する
-    count = 1;
+    initGame();
   });
 }
 
@@ -114,7 +138,7 @@ function hoverButton(button) {
   button.addEventListener("mouseover", function () {
     if (
       button.getAttribute("check-now") == null &&
-      (currentGameMode == "player" || userTurn.innerHTML == "X")
+      (currentGameMode == "pvp" || userTurn.innerHTML == "X")
     ) {
       button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
       button.classList.add("text-secondary");
@@ -134,53 +158,69 @@ function addTextOX(button) {
   button.classList.remove("text-secondary");
   button.setAttribute("check-now", "1");
 
+  // ボタンをクリック無効にする
+  button.style.pointerEvents = 'none';
+  /*
   // 勝利判定
   winerCheck();
 
   count++;
+  */
 }
 
-// ボタン処理
-for (let i = 0; i < button.length; i++) {
-  // ボタンのhover処理
-  hoverButton(button[i]);
+function addTextCPU(button) {
+  return new Promise(function (res, _) {
+    setTimeout(() => {
+      button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+      userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+      button.classList.remove("text-secondary");
+      button.setAttribute("check-now", "1");
+      button.style.pointerEvents = 'none';
 
-  // クリック処理
-  button[i].addEventListener("click", function () {
-    if (
-      currentGameMode == "cpu" &&
-      userTurn.innerHTML == "X" &&
-      button[i].getAttribute("check-now") == null
-    ) {
-      cpuControl = 0;
+      // 勝利判定
+      winerCheck();
 
-      // drawの表示
-      if (count >= 9) {
-        renderResult("draw");
-      }
-
-      // クリックされた箇所にO or Xを追加
-      addTextOX(button[i]);
-
-      // CPU処理
-      const cpuIndex = getCpuIndex(i);
-      if (cpuControl == 0 && cpuIndex != "end") {
-        setTimeout(() => {
-          addTextOX(button[cpuIndex]);
-        }, 1500);
-      }
-    } else if (
-      currentGameMode == "player" &&
-      button[i].getAttribute("check-now") == null
-    ) {
-
-      // drawの表示
-      if (count >= 9) {
-        renderResult("draw");
-      }
-        addTextOX(button[i]);
-    }
+      count++;
+      res();
+    }, 700);
   });
+}
+
+async function writeOX(button, i){
+  if (currentGameMode === 'pvp' || cpuStatus.player != userTurn.innerHTML) {
+    addTextOX(button[i]);
+    let winCheck = winerCheck();
+
+    if (count >= 9 && !winCheck) {
+      return renderResult("draw");
+    }
+
+    count++;
+
+
+    if (cpuStatus.state && (cpuStatus.player == userTurn.innerHTML) && !winCheck)  {
+      let cpuIndex = await getCpuIndex(i);
+      await addTextCPU(button[cpuIndex]);
+    }
+  }
+
+}
+
+function gameStart() {
+  // ボタン処理
+  for (let i = 0; i < button.length; i++) {
+    // ボタンのhover処理
+    hoverButton(button[i]);
+
+    // クリック処理
+    button[i].addEventListener("click", function () {
+      if (button[i].getAttribute("check-now") == null) {
+
+        writeOX(button, i);
+      }
+
+    });
+  };
 }
 
 // ゲームモード反映
@@ -192,19 +232,23 @@ selectMode.addEventListener("change", function () {
   if (message) {
     // 現在のモードを更新
     currentGameMode = selectMode.value;
+    if (currentGameMode === ('eazy'|| 'medium' || 'hard')) {
+      cpuStatus.state = true;
+      cpuStatus.level = currentGameMode;
+    }
+
     // ゲームをリセット
     for (let i = 0; i < button.length; i++) {
       button[i].removeAttribute("check-now");
       button[i].innerHTML = "";
+      button[i].removeAttribute('style');
     }
 
-    // userのturnを初期化
-    userTurn.innerHTML = "X";
-    // fillIndexを初期化
-    fillIndex = [];
-    // countを初期化する
-    count = 1;
+    initGame();
   } else {
     selectMode.value = currentGameMode;
   }
 });
+
+initGame();
+gameStart();
