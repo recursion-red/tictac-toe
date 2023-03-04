@@ -1,3 +1,5 @@
+@charset "utf-8";
+
 body {
   background-image: repeating-linear-gradient(
       to bottom,
@@ -53,11 +55,11 @@ body {
   padding-top: 60px;
 }
 
-.title-string {
+.rotate-string {
   display: inline-block;
 }
 
-.title-string:hover {
+.rotate-string:hover {
   transform: rotate(180deg);
 }
 
