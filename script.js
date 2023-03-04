@@ -16,6 +16,7 @@ const winPattern = [
   [0, 4, 8],
   [2, 4, 6],
 ];
+
 // selectModeを取得
 const selectMode = document.getElementById("select-mode");
 // あらかじめ現在のvalueを代入
@@ -81,16 +82,15 @@ function renderResult(winPlayer) {
   clickResetBtn(btnReset);
 }
 
-function clickResetBtn(btnReset) {
-  btnReset.addEventListener("click", function () {
-    for (let i = 0; i < button.length; i++) {
-      button[i].removeAttribute("check-now");
-      button[i].innerHTML = "";
-    }
+function clickResetBtn() {
+  for (let i = 0; i < button.length; i++) {
+    button[i].removeAttribute("check-now");
+    button[i].innerHTML = "";
+  }
 
-    // modalを非表示、テーブルを表示
-    displayNone(config.modal);
-    displayBlock(config.mainPage);
+  // modalを非表示、テーブルを表示
+  displayNone(config.modal);
+  displayBlock(config.mainPage);
 
     // なぜか無駄な数字が出てくる
     // console.log(count);
@@ -145,7 +145,6 @@ function addTextOX(button) {
 
   // 勝利判定
   winerCheck();
-
   count++;
 }
 
