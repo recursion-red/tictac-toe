@@ -172,12 +172,11 @@ for (let i = 0; i < button.length; i++) {
       currentGameMode == "player" &&
       button[i].getAttribute("check-now") == null
     ) {
-      // draw判定
+
       if (count >= 9) {
         renderResult("draw");
-      } else {
-        addTextOX(button[i]);
       }
+        addTextOX(button[i]);
     }
   });
 }
