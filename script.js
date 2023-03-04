@@ -78,6 +78,7 @@ function clickResetBtn() {
   for (let i = 0; i < button.length; i++) {
     button[i].removeAttribute("check-now");
     button[i].innerHTML = "";
+    button[i].removeAttribute('style');
   }
 
   // modalを非表示、テーブルを表示
@@ -90,6 +91,7 @@ function clickResetBtn() {
   fillIndex = [];
   // countを初期化する
   count = 1;
+  
 }
 
 // CPUを作成する関数
@@ -130,15 +132,34 @@ function hoverButton(button) {
 }
 
 function addTextOX(button) {
+
   button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
   userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
   button.classList.remove("text-secondary");
   button.setAttribute("check-now", "1");
+  button.style.pointerEvents = 'none';
 
   // 勝利判定
   winerCheck();
 
   count++;
+
+}
+
+function addTextCPU(button) {
+  return new Promise((res, _) {
+      button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+      userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+      button.classList.remove("text-secondary");
+      button.setAttribute("check-now", "1");
+      button.style.pointerEvents = 'none';
+
+      // 勝利判定
+      winerCheck();
+
+      count++;
+  })
+
 }
 
 // ボタン処理
@@ -147,24 +168,28 @@ for (let i = 0; i < button.length; i++) {
   hoverButton(button[i]);
 
   // クリック処理
-  button[i].addEventListener("click", function () {
+  button[i].addEventListener('click', function() { 
     if (button[i].getAttribute("check-now") == null) {
-      // draw判定
-      if (count >= 9) {
-        renderResult("draw");
-      }
+        // draw判定
+        if (count >= 9) {
+          renderResult("draw");
+        }
+        if (currentGameMode === 'player' || count % 2 != 0) {
+          // クリックされた箇所にO or Xを追加
+          console.log('p X');
+          addTextOX(button[i]);
+        }
 
-      // クリックされた箇所にO or Xを追加
-      addTextOX(button[i]);
+        // CPU処理
+        const cpuIndex = getCpuIndex(i);
+        if (currentGameMode == "cpu" && cpuIndex != "end") {
+          setTimeout(() => {
+            addTextOX(button[cpuIndex]);
+            console.log('p O');
+          }, 500);
+        }
 
-      // CPU処理
-      const cpuIndex = getCpuIndex(i);
-      if (currentGameMode == "cpu" && cpuIndex != "end") {
-        setTimeout(() => {
-          addTextOX(button[cpuIndex]);
-        }, 800);
       }
-    }
   });
 }
 
