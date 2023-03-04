@@ -16,7 +16,10 @@ const winPattern = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-
+// selectboxを取得
+const selectBox = document.getElementById("select-mode");
+// あらかじめ現在のvalueを代入
+let currentGameMode = selectBox.value;
 // 埋まっているindexを保存
 let fillIndex = [];
 // ボタンを押した回数
@@ -66,28 +69,27 @@ function renderResult(winPlayer) {
   displayBlock(config.modal);
 
   // リセットボタン処理
-  clickResetBtn(btnReset)
-
+  btnReset.addEventListener("click", function () {
+    clickResetBtn();
+  });
 }
 
-function clickResetBtn(btnReset) {
-  btnReset.addEventListener("click", function () {
-    for (let i = 0; i < button.length; i++) {
-      button[i].removeAttribute("check-now");
-      button[i].innerHTML = "";
-    }
+function clickResetBtn() {
+  for (let i = 0; i < button.length; i++) {
+    button[i].removeAttribute("check-now");
+    button[i].innerHTML = "";
+  }
 
-    // modalを非表示、テーブルを表示
-    displayNone(config.modal);
-    displayBlock(config.mainPage);
+  // modalを非表示、テーブルを表示
+  displayNone(config.modal);
+  displayBlock(config.mainPage);
 
-    // userのturnを初期化
-    userTurn.innerHTML = "X";
-    // fillIndexを初期化
-    fillIndex = [];
-    // countを初期化する
-    count = 1;
-  });
+  // userのturnを初期化
+  userTurn.innerHTML = "X";
+  // fillIndexを初期化
+  fillIndex = [];
+  // countを初期化する
+  count = 1;
 }
 
 // CPUを作成する関数
@@ -107,10 +109,17 @@ function getCpuIndex(index) {
 
 function hoverButton(button) {
   button.addEventListener("mouseover", function () {
-      if (button.getAttribute("check-now") == null) {
+    if (button.getAttribute("check-now") == null) {
+      if (currentGameMode == "player") {
         button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
         button.classList.add("text-secondary");
       }
+      // cpuのターンではなかったら
+      else if (count % 2 != 0) {
+        button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+        button.classList.add("text-secondary");
+      }
+    }
   });
 
   button.addEventListener("mouseout", function () {
@@ -120,17 +129,16 @@ function hoverButton(button) {
   });
 }
 
-function addTextOX (button) {
+function addTextOX(button) {
+  button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
+  userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
+  button.classList.remove("text-secondary");
+  button.setAttribute("check-now", "1");
 
-      button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
-      userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
-      button.classList.remove("text-secondary");
-      button.setAttribute("check-now", "1");
+  // 勝利判定
+  winerCheck();
 
-      // 勝利判定
-      winerCheck();
-
-      count++;
+  count++;
 }
 
 // ボタン処理
@@ -147,18 +155,31 @@ for (let i = 0; i < button.length; i++) {
       }
 
       // クリックされた箇所にO or Xを追加
-      addTextOX(button[i])
+      addTextOX(button[i]);
 
       // CPU処理
       const cpuIndex = getCpuIndex(i);
-      if (cpuIndex != "end") {
-        setTimeout(()=>{
-          addTextOX(button[cpuIndex])
+      if (currentGameMode == "cpu" && cpuIndex != "end") {
+        setTimeout(() => {
+          addTextOX(button[cpuIndex]);
         }, 800);
       }
-
     }
   });
 }
 
+// ゲームモード反映
+selectBox.addEventListener("change", function () {
+  const message = confirm(
+    "ゲームモードを切り替えますか？(現在の進行状況はリセットされます)"
+  );
 
+  if (message) {
+    // 現在のモードを更新
+    currentGameMode = selectBox.value;
+    // ゲームをリセット
+    clickResetBtn();
+  } else {
+    selectBox.value = currentGameMode;
+  }
+});
