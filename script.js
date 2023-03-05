@@ -77,7 +77,6 @@ function winerCheck() {
     // 勝利判定
     if (element1 != "" && element2 != "" && element3 != "") {
       if (element1 == element2 && element2 == element3) {
-
         // classの追加
         buttonList[winPattern[i][0]].classList.add("winBtnColor");
         buttonList[winPattern[i][1]].classList.add("winBtnColor");
@@ -88,11 +87,11 @@ function winerCheck() {
           buttonList[winPattern[i][0]],
           buttonList[winPattern[i][1]],
           buttonList[winPattern[i][2]]
-        )
+        );
 
         setTimeout(() => {
           // 線の削除
-          removeWinningLine()
+          removeWinningLine();
           // winの画面を表示させる関数を呼び出す
           renderResult(element1);
         }, 700);
@@ -123,7 +122,7 @@ function drawWinningLine(btn1, btn2, btn3) {
   const endPointY = btn3Rect.top + btn3Rect.height / 2;
   const deltaX = endPointX - parseFloat(line.style.left);
   const deltaY = endPointY - parseFloat(line.style.top);
-  const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+  const angle = (Math.atan2(deltaY, deltaX) * 180) / Math.PI;
   const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
   line.style.width = length + "px";
   line.style.transform = "rotate(" + angle + "deg)";
@@ -186,7 +185,7 @@ function getCpuIndex(index) {
   fillIndex.push(index);
 
   // デフォルトのindexを定義
-  let cpuIndex
+  let cpuIndex;
 
   while (fillIndex.indexOf(cpuIndex) != -1 || cpuIndex == undefined) {
     cpuIndex = Math.floor(Math.random() * 9);
@@ -228,6 +227,7 @@ function addTextOX(button) {
 function addTextCPU(button) {
   return new Promise(function (res, _) {
     setTimeout(() => {
+      console.log(userTurn.innerHTML);
       button.innerHTML = userTurn.innerHTML == "X" ? "&#10005" : "&#9675";
       userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
       button.classList.remove("text-secondary");
@@ -246,14 +246,14 @@ function addTextCPU(button) {
 async function writeOX(button, i) {
   if (currentGameMode === "pvp" || cpuStatus.player != userTurn.innerHTML) {
     addTextOX(button[i]);
-    const winCheck = winerCheck();
+    let winCheck = winerCheck();
 
     if (count >= 9 && !winCheck) {
-
       // 間を入れてみた
       setTimeout(() => {
         return renderResult("draw");
       }, 600);
+      winCheck = true;
     }
     turnAnimation();
 
