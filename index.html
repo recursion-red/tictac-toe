@@ -16,15 +16,22 @@
 
   <body>
     <div class="contents d-flex flex-column">
-      <div class="d-flex flex-column p-2 m-4 border-start border-dark border-5">
-        <label for="select-mode" class="h4">Game Mode</label>
+      <div class="d-flex justify-content-around align-items-center m-4">
+        <div class="d-flex flex-column p-2 border-start border-dark border-5">
+          <label for="select-mode" class="h4">Game Mode</label>
 
-        <select name="mode" id="select-mode" class="select-box p-1">
-          <option value="easy">Easy</option>
-          <option value="medium">Medium</option>
-          <option value="hard">Hard</option>
-          <option value="pvp">player vs player</option>
-        </select>
+          <select name="mode" id="select-mode" class="select-box p-2">
+            <option value="cpu">player vs cpu</option>
+            <option value="pvp">player vs player</option>
+          </select>
+        </div>
+
+        <div
+          class="display-turn d-flex gap-4 border-bottom border-dark border-5"
+        >
+          <p id="turnX" class="h1">X</p>
+          <p id="turnO" class="h1 text-secondary">O</p>
+        </div>
       </div>
       <div id="mainPage" class="d-block">
         <h1
