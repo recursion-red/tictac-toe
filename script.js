@@ -246,5 +246,140 @@ selectMode.addEventListener("change", function () {
   }
 });
 
+
+// MinMax 
+
+/*
+
+let board = [
+  'O', '', 'X',
+  'X', '', 'X',
+  '', 'O', 'O',
+]
+*/
+
+let board = [
+  '', '', 'X',
+  '', '', '',
+  '', '', '',
+]
+
+
+function boardGenerator(button) {
+  let board = [];
+  for (let i = 0; i < button.length; i++){
+    board.push(button[i].innerText);
+  }
+  return board;
+}
+
+
+function emptySearch(board) {
+  let spaces = [];
+  for (let i = 0; i < board.length; i++){
+    if (board[i] == '') spaces.push(i);
+  }
+  return spaces;
+}
+
+function isWin(board, player) {
+  for (let i in winPattern) {
+    let element1 = board[winPattern[i][0]];
+    let element2 = board[winPattern[i][1]];
+    let element3 = board[winPattern[i][2]];
+    // 勝利判定
+    if (element1 != "" && element2 != "" && element3 != "") {
+      if (element1 == element2 && element2 == element3 && element1 == player) {
+        // winの画面を表示させる関数を呼び出す
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
+// CPUは'O'プレイヤー
+function miniMax(board, player){
+  // 空のインデックスを見つける
+  let emptyBoard = emptySearch(board);
+
+  // 
+  let bestScore = {};
+  if (player == players.p2) {
+    bestScore = -1000;
+  } else {
+    bestScore = 1000;
+  }
+
+  // 条件
+  if (isWin(board, player)) {
+    return { score: - 10 } ;
+  } else if (isWin(board, player === 'X' ? 'O' : 'X')) {
+    return { score: 10 };
+  } else if (emptyBoard.length === 0) {
+    return { score: 0 };
+  }
+
+  let moves = [];
+  // 各マスに置いた場合のスコアを計算、リザルトに格納する
+  for (let i = 0; i < emptyBoard.length; i++) {
+    let move = {
+      index: 0,
+      score: 0,
+    };
+    // スコアとインデックスを格納
+    move.index = emptyBoard[i];
+
+    // boardを更新（入力)する
+    board[emptyBoard[i]] = player;
+
+    if (player === 'O') {
+      let result = miniMax(board, 'X');
+      console.log(result);
+      move.score = result.score;
+    } else {
+      let result = miniMax(board, 'O');
+      move.score = result.score;
+    }
+
+    //盤面を戻す
+    board[emptyBoard[i]] = '';
+
+    // マスとスコアを追加
+    moves.push(move);
+  }
+  console.log('moves', moves);
+  // 最適を決定する
+  let bestMove;
+  if (player == 'O') {
+    //最大値を持つ要素を求める
+    for (let i = 0; i < moves.length; i++){
+      if (moves[i].score > bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  } else {
+    //最小値を持つ要素を求める
+    for (let i = 0; i < moves.length; i++){
+      if (moves[i].score < bestScore) {
+        bestScore = moves[i].score;
+        bestMove = i;
+      }
+    }
+  }
+
+  return moves[bestMove];
+
+}
+
+
+/*
+let i = miniMax(board, players.p1);
+console.log(i);
+*/
+
+
+
 initGame();
 gameStart();
