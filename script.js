@@ -1,9 +1,10 @@
-const config = {
-  mainPage: document.getElementById("mainPage"),
-  modal: document.getElementById("modal"),
-};
-// buttonとturnを取得
-const button = document.querySelectorAll(".button");
+// セレクトボックスを取得
+const selectMode = document.getElementById("select-mode");
+// あらかじめ現在のvalueを代入
+let currentGameMode = selectMode.value;
+// ボタンのリストを取得
+const buttonList = document.querySelectorAll(".button");
+// ユーザーターンを取得
 const userTurn = document.getElementById("user-turn");
 // 勝ちパターンを定義
 const winPattern = [
@@ -16,35 +17,30 @@ const winPattern = [
   [0, 4, 8],
   [2, 4, 6],
 ];
-// selectboxを取得
-const selectMode = document.getElementById("select-mode");
-// あらかじめ現在のvalueを代入
-let currentGameMode = selectMode.value;
+// メインページのid、モーダルページのidをオブジェクトとして保存
+const config = {
+  mainPage: document.getElementById("mainPage"),
+  modal: document.getElementById("modal"),
+};
 // 埋まっているindexを保存
 let fillIndex = [];
 // ボタンを押した回数
 let count = 1;
-// cpu動作をするかしないか 0だったらする、1だったらしない
-
-let players = {
-  p1: 'x',
-  p2: 'o'
-}
-
 // cpuの状態
 let cpuStatus = {
-  player: 'O',
+  player: "O",
   state: false,
-  level: 'easy',
-}
+};
 
 function initGame() {
-  if (currentGameMode == ('easy' || 'medium' || 'hard')) {
+  if (currentGameMode == "cpu") {
     cpuStatus.state = true;
-    cpuStatus.level = currentGameMode;
   } else {
     cpuStatus.state = false;
   }
+
+  document.getElementById("turnX").classList.remove("text-secondary");
+  document.getElementById("turnO").classList.add("text-secondary");
 
   // userのturnを初期化
   userTurn.innerHTML = "X";
@@ -66,12 +62,17 @@ function displayBlock(ele) {
   ele.classList.add("d-block");
 }
 
+function turnAnimation() {
+  document.getElementById("turnX").classList.toggle("text-secondary");
+  document.getElementById("turnO").classList.toggle("text-secondary");
+}
+
 // 勝利判定の関数
 function winerCheck() {
   for (let i in winPattern) {
-    let element1 = button[winPattern[i][0]].innerHTML;
-    let element2 = button[winPattern[i][1]].innerHTML;
-    let element3 = button[winPattern[i][2]].innerHTML;
+    const element1 = buttonList[winPattern[i][0]].innerHTML;
+    const element2 = buttonList[winPattern[i][1]].innerHTML;
+    const element3 = buttonList[winPattern[i][2]].innerHTML;
 
     // 勝利判定
     if (element1 != "" && element2 != "" && element3 != "") {
@@ -87,13 +88,13 @@ function winerCheck() {
 
 // リザルト画面を表示する
 function renderResult(winPlayer) {
-  let btnReset = document.getElementById("modal-btn-reset");
+  const btnReset = document.getElementById("modal-btn-reset");
   let modalWinner = document.getElementById("modal-winner");
 
   // リザルト画面にプレイヤーネームか引き分けかを表示する
   winPlayer === "draw"
     ? (modalWinner.innerHTML = winPlayer)
-    : (modalWinner.innerHTML = winPlayer + "'s Winds!!");
+    : (modalWinner.innerHTML = winPlayer + "'s Winner!!");
 
   // テーブルを非表示、modalを表示
   displayNone(config.mainPage);
@@ -105,10 +106,10 @@ function renderResult(winPlayer) {
 
 function clickResetBtn(btnReset) {
   btnReset.addEventListener("click", function () {
-    for (let i = 0; i < button.length; i++) {
-      button[i].removeAttribute("check-now");
-      button[i].innerHTML = "";
-      button[i].removeAttribute('style');
+    for (let i = 0; i < buttonList.length; i++) {
+      buttonList[i].removeAttribute("check-now");
+      buttonList[i].innerHTML = "";
+      buttonList[i].removeAttribute("style");
     }
 
     // modalを非表示、テーブルを表示
@@ -159,13 +160,7 @@ function addTextOX(button) {
   button.setAttribute("check-now", "1");
 
   // ボタンをクリック無効にする
-  button.style.pointerEvents = 'none';
-  /*
-  // 勝利判定
-  winerCheck();
-
-  count++;
-  */
+  button.style.pointerEvents = "none";
 }
 
 function addTextCPU(button) {
@@ -175,52 +170,54 @@ function addTextCPU(button) {
       userTurn.innerHTML = userTurn.innerHTML == "X" ? "O" : "X";
       button.classList.remove("text-secondary");
       button.setAttribute("check-now", "1");
-      button.style.pointerEvents = 'none';
+      button.style.pointerEvents = "none";
 
       // 勝利判定
       winerCheck();
 
       count++;
       res();
-    }, 700);
+    }, 1500);
   });
 }
 
-async function writeOX(button, i){
-  if (currentGameMode === 'pvp' || cpuStatus.player != userTurn.innerHTML) {
+async function writeOX(button, i) {
+  if (currentGameMode === "pvp" || cpuStatus.player != userTurn.innerHTML) {
     addTextOX(button[i]);
-    let winCheck = winerCheck();
+    const winCheck = winerCheck();
 
     if (count >= 9 && !winCheck) {
       return renderResult("draw");
     }
+    turnAnimation();
 
     count++;
 
-
-    if (cpuStatus.state && (cpuStatus.player == userTurn.innerHTML) && !winCheck)  {
-      let cpuIndex = getCpuIndex(i);
+    if (
+      cpuStatus.state &&
+      cpuStatus.player == userTurn.innerHTML &&
+      !winCheck
+    ) {
+      const cpuIndex = getCpuIndex(i);
       await addTextCPU(button[cpuIndex]);
+      turnAnimation();
     }
   }
-
 }
 
 function gameStart() {
   // ボタン処理
-  for (let i = 0; i < button.length; i++) {
+  for (let i = 0; i < buttonList.length; i++) {
     // ボタンのhover処理
-    hoverButton(button[i]);
+    hoverButton(buttonList[i]);
 
     // クリック処理
-    button[i].addEventListener("click", function () {
-      if (button[i].getAttribute("check-now") == null) {
-
-        writeOX(button, i);
+    buttonList[i].addEventListener("click", function () {
+      if (buttonList[i].getAttribute("check-now") == null) {
+        writeOX(buttonList, i);
       }
-
     });
-  };
+  }
 }
 
 // ゲームモード反映
@@ -234,10 +231,10 @@ selectMode.addEventListener("change", function () {
     currentGameMode = selectMode.value;
 
     // ゲームをリセット
-    for (let i = 0; i < button.length; i++) {
-      button[i].removeAttribute("check-now");
-      button[i].innerHTML = "";
-      button[i].removeAttribute('style');
+    for (let i = 0; i < buttonList.length; i++) {
+      buttonList[i].removeAttribute("check-now");
+      buttonList[i].innerHTML = "";
+      buttonList[i].removeAttribute("style");
     }
 
     initGame();
