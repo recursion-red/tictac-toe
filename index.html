@@ -12,12 +12,14 @@
     />
     <!-- style.css -->
     <link rel="stylesheet" href="style.css" />
+    <!-- gsap -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   </head>
 
   <body>
     <div class="contents d-flex flex-column">
       <div class="d-flex justify-content-around align-items-center m-4">
-        <div class="d-flex flex-column p-2 border-start border-dark border-5">
+        <div class="d-flex flex-column p-2 ">
           <label for="select-mode" class="h4">Game Mode</label>
 
           <select name="mode" id="select-mode" class="select-box p-2">
@@ -27,10 +29,10 @@
         </div>
 
         <div
-          class="display-turn d-flex gap-4 border-bottom border-dark border-5"
+          class="display-turn d-flex gap-4 border-bottom border-dark border-2"
         >
           <p id="turnX" class="h1">X</p>
-          <p id="turnO" class="h1 text-secondary">O</p>
+          <p id="turnO" class="h1 turnColor">O</p>
         </div>
       </div>
       <div id="mainPage" class="d-block">
