@@ -3,13 +3,17 @@
  tictac-toe
  
 説明を記述する : 
+9つのマス目があり、○と×のマークを交互に置いていきます。
+縦、横、斜めのいずれかに自分のマークを3つ並べられたら勝ちです。 
 
  
 # DEMO 
 "hoge"の魅力が直感的に伝えわるデモ動画や図解を載せる
  
 # Features
-"hoge"のセールスポイントや差別化などを説明する
+マス目をホバーすると薄い色で記号が表示される
+現在のターンに応じて、右上の X O　の色が変化する
+同じ記号が三つ並ぶと、線が引かれる
 
  
 # Usage 
@@ -29,12 +33,7 @@ open index.html
  
 作成情報を列挙する
  
-* 作成者
-* 所属
-* E-mail
- 
-# License
-ライセンスを明示する
+* 作成者 Tomoya1 goemon-github Yasuhiro-Nagahama
  
 "hoge" is under [MIT license](https://en.wikipedia.org/wiki/MIT_License).
  
