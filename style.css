@@ -100,4 +100,21 @@ body {
   justify-content: center;
   border-top: none !important;
 }
+
+.winBtnColor {
+  background-color: #d3d3d3;
+}
+
+.winning-line {
+  position: absolute;
+  background-color: black;
+  height: 2px;
+  width: 0%;
+  transform-origin: left;
+  transition: width 0.5s ease-in-out;
+}
+
+.turnColor {
+  color: #d3d3d3;
+}
 /* end overRide */

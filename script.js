@@ -39,8 +39,8 @@ function initGame() {
     cpuStatus.state = false;
   }
 
-  document.getElementById("turnX").classList.remove("text-secondary");
-  document.getElementById("turnO").classList.add("text-secondary");
+  document.getElementById("turnX").classList.remove("turnColor");
+  document.getElementById("turnO").classList.add("turnColor");
 
   // userのturnを初期化
   userTurn.innerHTML = "X";
@@ -63,8 +63,8 @@ function displayBlock(ele) {
 }
 
 function turnAnimation() {
-  document.getElementById("turnX").classList.toggle("text-secondary");
-  document.getElementById("turnO").classList.toggle("text-secondary");
+  document.getElementById("turnX").classList.toggle("turnColor");
+  document.getElementById("turnO").classList.toggle("turnColor");
 }
 
 // 勝利判定の関数
@@ -77,13 +77,68 @@ function winerCheck() {
     // 勝利判定
     if (element1 != "" && element2 != "" && element3 != "") {
       if (element1 == element2 && element2 == element3) {
-        // winの画面を表示させる関数を呼び出す
-        renderResult(element1);
+
+        // classの追加
+        buttonList[winPattern[i][0]].classList.add("winBtnColor");
+        buttonList[winPattern[i][1]].classList.add("winBtnColor");
+        buttonList[winPattern[i][2]].classList.add("winBtnColor");
+
+        // 勝者のマスに線を結ぶ
+        drawWinningLine(
+          buttonList[winPattern[i][0]],
+          buttonList[winPattern[i][1]],
+          buttonList[winPattern[i][2]]
+        )
+
+        setTimeout(() => {
+          // 線の削除
+          removeWinningLine()
+          // winの画面を表示させる関数を呼び出す
+          renderResult(element1);
+        }, 700);
+
         return true;
       }
     }
   }
   return false;
+}
+
+function drawWinningLine(btn1, btn2, btn3) {
+  const line = document.createElement("div");
+  line.classList.add("winning-line");
+  line.style.position = "absolute";
+
+  // ボタンの位置を取得
+  const btn1Rect = btn1.getBoundingClientRect();
+  const btn2Rect = btn2.getBoundingClientRect();
+  const btn3Rect = btn3.getBoundingClientRect();
+
+  // 線の始点を設定
+  line.style.top = btn1Rect.top + btn1Rect.height / 2 + "px";
+  line.style.left = btn1Rect.left + btn1Rect.width / 2 + "px";
+
+  // 線の終点を設定
+  const endPointX = btn3Rect.left + btn3Rect.width / 2;
+  const endPointY = btn3Rect.top + btn3Rect.height / 2;
+  const deltaX = endPointX - parseFloat(line.style.left);
+  const deltaY = endPointY - parseFloat(line.style.top);
+  const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+  const length = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+  line.style.width = length + "px";
+  line.style.transform = "rotate(" + angle + "deg)";
+  line.style.border = "2px solid #000"; // 線の太さと色を指定
+
+  // 線を追加
+  document.body.appendChild(line);
+}
+
+// 勝利時に線を削除する関数
+function removeWinningLine() {
+  const winningLine = document.getElementsByClassName("winning-line")[0];
+  if (winningLine) {
+    winningLine.remove();
+  }
 }
 
 // リザルト画面を表示する
@@ -100,6 +155,10 @@ function renderResult(winPlayer) {
   displayNone(config.mainPage);
   displayBlock(config.modal);
 
+  // 両方色つける
+  document.getElementById("turnX").classList.add("turnColor");
+  document.getElementById("turnO").classList.add("turnColor");
+
   // リセットボタン処理
   clickResetBtn(btnReset);
 }
@@ -108,6 +167,7 @@ function clickResetBtn(btnReset) {
   btnReset.addEventListener("click", function () {
     for (let i = 0; i < buttonList.length; i++) {
       buttonList[i].removeAttribute("check-now");
+      buttonList[i].classList.remove("winBtnColor");
       buttonList[i].innerHTML = "";
       buttonList[i].removeAttribute("style");
     }
@@ -124,9 +184,11 @@ function clickResetBtn(btnReset) {
 function getCpuIndex(index) {
   if (fillIndex.length == 8) return "end";
   fillIndex.push(index);
-  let cpuIndex = 0;
 
-  while (fillIndex.indexOf(cpuIndex) != -1) {
+  // デフォルトのindexを定義
+  let cpuIndex
+
+  while (fillIndex.indexOf(cpuIndex) != -1 || cpuIndex == undefined) {
     cpuIndex = Math.floor(Math.random() * 9);
   }
 
@@ -187,7 +249,11 @@ async function writeOX(button, i) {
     const winCheck = winerCheck();
 
     if (count >= 9 && !winCheck) {
-      return renderResult("draw");
+
+      // 間を入れてみた
+      setTimeout(() => {
+        return renderResult("draw");
+      }, 600);
     }
     turnAnimation();
 
