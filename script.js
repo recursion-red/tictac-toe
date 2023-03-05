@@ -199,7 +199,7 @@ async function writeOX(button, i){
 
 
     if (cpuStatus.state && (cpuStatus.player == userTurn.innerHTML) && !winCheck)  {
-      let cpuIndex = await getCpuIndex(i);
+      let cpuIndex = getCpuIndex(i);
       await addTextCPU(button[cpuIndex]);
     }
   }
