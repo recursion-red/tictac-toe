@@ -186,21 +186,21 @@ function addTextCPU(button) {
   });
 }
 
-async function writeOX(button, i){
+async function writeOX(btn, i){
   if (currentGameMode === 'pvp' || cpuStatus.player != userTurn.innerHTML) {
-    addTextOX(button[i]);
+    addTextOX(btn[i]);
     let winCheck = winerCheck();
-
-    if (count >= 9 && !winCheck) {
-      return renderResult("draw");
-    }
-
     count++;
 
-
+    console.log('winCheckFlag',winCheck);
     if (cpuStatus.state && (cpuStatus.player == userTurn.innerHTML) && !winCheck)  {
-      let cpuIndex = getCpuIndex(i);
-      await addTextCPU(button[cpuIndex]);
+      //let cpuIndex = await getCpuIndex(i);
+
+      board = boardGenerator(button);
+      let cpuIndex = miniMax(board, players.p1);
+      console.log(cpuIndex);
+
+      await addTextCPU(btn[cpuIndex.index]);
     }
   }
 
@@ -348,7 +348,6 @@ function miniMax(board, player){
     // マスとスコアを追加
     moves.push(move);
   }
-  console.log('moves', moves);
   // 最適を決定する
   let bestMove;
   if (player == 'O') {
