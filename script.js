@@ -39,7 +39,7 @@ let cpuStatus = {
 }
 
 function initGame() {
-  if (currentGameMode == ('eazy' || 'medium' || 'hard')) {
+  if (currentGameMode == ('easy' || 'medium' || 'hard')) {
     cpuStatus.state = true;
     cpuStatus.level = currentGameMode;
   } else {
@@ -232,10 +232,6 @@ selectMode.addEventListener("change", function () {
   if (message) {
     // 現在のモードを更新
     currentGameMode = selectMode.value;
-    if (currentGameMode === ('eazy'|| 'medium' || 'hard')) {
-      cpuStatus.state = true;
-      cpuStatus.level = currentGameMode;
-    }
 
     // ゲームをリセット
     for (let i = 0; i < button.length; i++) {
